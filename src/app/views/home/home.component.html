@@ -1,0 +1,96 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <form
+      class="mt-5"
+      [formGroup]="formFields"
+      (ngSubmit)="addUser(formFields.value)"
+    >
+      <div class="mb-3">
+        <label for="firstname" class="form-label">User Name: </label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          name="username"
+          placeholder="Enter your User Name"
+          formControlName="username"
+        />
+
+        <div
+          class="error"
+          *ngIf="fields['username'].touched && fields['username'].invalid"
+        >
+          <div *ngIf="fields['username'].errors?.['required']">
+            User Name is required
+          </div>
+
+          <div *ngIf="fields['username'].errors?.['minlength']">
+            User Name minimum length is
+            {{fields['username'].errors?.['minlength'].requiredLength}}
+          </div>
+        </div>
+      </div>
+
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Enter your E-mail"
+        formControlName="email"
+      />
+
+      <div
+        class="error d-flex ml-2 text-center"
+        *ngIf="fields['email'].touched && fields['email'].invalid"
+      >
+        <div *ngIf="fields['email'].errors?.['required']">
+          Email is required
+        </div>
+        <div *ngIf="fields['email'].errors?.['email']">
+          Enter a valied email
+        </div>
+      </div>
+
+      <div class="row justify-content-center">
+        <button
+          type="submit"
+          class="btn btn-primary justify mt-3"
+          [disabled]="formFields.invalid"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="container">
+  <div class="row mt-4">
+    <div class="col-sm-3 mt-3" *ngFor="let user of usersList; let i = index">
+      <div class="card text-center">
+        <div class="card-body">
+          <h3 class="card-title">{{ user.username }}</h3>
+          <h4 class="card-title">Name: {{ user.company.name }}</h4>
+          <h5 class="card-text">City: {{ user.address.city }}</h5>
+          <p class="card-text">
+            GEO[ Lat:{{ user.address.geo.lat }}, lng:{{ user.address.geo.lng }}
+          </p>
+          <div class="row justify-content-center">
+            <a routerLink="/user/{{ user.id }}" class="btn btn-primary"
+              >Read More Info.</a
+            >
+          </div>
+          <div class="row mt-3 justify-content-center">
+            <a routerLink="/update/{{ user.id }}" class="btn btn-success mr-3"
+              >Edit</a
+            >
+            <a class="btn btn-danger" (click)="deleteUser(user.id, i)"
+              >Delete</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
